@@ -2,13 +2,13 @@ const jwt = require('jsonwebtoken');
 
 const APP_ID = process.env.APP_ID;
 const SUB = process.env.SUB;
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const PRIVATE_KEY = process.env.PRIVATE_KEY.replace(/\\n/g, '\n');
 
-module.exports = (req, res) => {
-  const room = req.query.room;
+export default function handler(req, res) {
+  const { room } = req.query;
+
   if (!room) {
-    res.status(400).json({ error: 'Missing room name' });
-    return;
+    return res.status(400).json({ error: 'Missing room name' });
   }
 
   const payload = {
@@ -20,13 +20,19 @@ module.exports = (req, res) => {
     nbf: Math.floor(Date.now() / 1000),
     context: {
       user: {
-        name: "Tutor",
-        email: "tutor@example.com",
-        moderator: true
+        name: 'Tutor',
+        email: 'tutor@example.com',
+        moderator: true,
       }
     }
   };
 
-  const token = jwt.sign(payload, PRIVATE_KEY, { algorithm: 'RS256' });
-  res.status(200).json({ token });
-};
+  try {
+    const token = jwt.sign(payload, PRIVATE_KEY, { algorithm: 'RS256' });
+    res.status(200).json({ token });
+  } catch (err) {
+    console.error("JWT signing error:", err);
+    res.status(500).json({ error: 'Token generation failed' });
+  }
+}
+
