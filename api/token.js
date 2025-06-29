@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const APP_ID = process.env.APP_ID;
-const SUB = process.env.SUB;
+const APP_ID = process.env.APP_ID || 'chat';  // fallback if env var missing
+const SUB = process.env.SUB || 'chat';        // fallback if env var missing
 const PRIVATE_KEY = process.env.PRIVATE_KEY.replace(/\\n/g, '\n');
 
 export default function handler(req, res) {
@@ -16,13 +16,18 @@ export default function handler(req, res) {
     iss: APP_ID,
     sub: SUB,
     room,
-    exp: Math.floor(Date.now() / 1000) + 60 * 60,
+    exp: Math.floor(Date.now() / 1000) + 60 * 60,  // expires in 1 hour
     nbf: Math.floor(Date.now() / 1000),
     context: {
       user: {
         name: 'Tutor',
         email: 'tutor@example.com',
         moderator: true,
+      },
+      features: {
+        livestreaming: true,
+        recording: true,
+        transcription: false,
       }
     }
   };
@@ -30,7 +35,7 @@ export default function handler(req, res) {
   try {
     const token = jwt.sign(payload, PRIVATE_KEY, {
       algorithm: 'RS256',
-      keyid: "beb107"  // This adds the kid header to your JWT
+      keyid: "beb107",  // your Key ID here
     });
     res.status(200).json({ token });
   } catch (err) {
