@@ -28,11 +28,13 @@ export default function handler(req, res) {
   };
 
   try {
-    const token = jwt.sign(payload, PRIVATE_KEY, { algorithm: 'RS256' });
+    const token = jwt.sign(payload, PRIVATE_KEY, {
+      algorithm: 'RS256',
+      keyid: beb107  // This adds the kid header to your JWT
+    });
     res.status(200).json({ token });
   } catch (err) {
     console.error("JWT signing error:", err);
     res.status(500).json({ error: 'Token generation failed' });
   }
 }
-
