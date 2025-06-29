@@ -11,6 +11,7 @@ const SUB = process.env.SUB;
 const PRIVATE_KEY = process.env.PRIVATE_KEY.replace(/\\n/g, '\n');
 
 
+
 app.get('/', (req, res) => {
   res.send('Hello from Jitsi Token Server!');
 });
