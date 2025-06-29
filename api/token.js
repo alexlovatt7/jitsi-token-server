@@ -22,7 +22,7 @@ export default function handler(req, res) {
   const now = Math.floor(Date.now() / 1000);  
   const payload = {  
     aud : 'jitsi',  
-    iss : APP_ID,  
+    iss : 'chat',  
     sub : APP_ID,  
     room,  
     nbf : now,  
