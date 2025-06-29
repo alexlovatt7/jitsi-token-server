@@ -4,11 +4,15 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;  // Use PORT from env for Vercel
 
 const APP_ID = process.env.APP_ID;
 const SUB = process.env.SUB;
 const PRIVATE_KEY = fs.readFileSync(process.env.PRIVATE_KEY_PATH, 'utf8');
+
+app.get('/', (req, res) => {
+  res.send('Hello from Jitsi Token Server!');
+});
 
 app.get('/token', (req, res) => {
   const room = req.query.room;
