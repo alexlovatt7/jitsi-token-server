@@ -4,7 +4,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const port = process.env.PORT || 3000;  // Use PORT from env for Vercel
+const port = process.env.PORT || 3000;  // Use PORT from env for vercel
 
 const APP_ID = process.env.APP_ID;
 const SUB = process.env.SUB;
