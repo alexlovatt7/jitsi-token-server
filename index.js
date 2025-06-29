@@ -8,7 +8,8 @@ const port = process.env.PORT || 3000;  // Use PORT from env for Vercel
 
 const APP_ID = process.env.APP_ID;
 const SUB = process.env.SUB;
-const PRIVATE_KEY = fs.readFileSync(process.env.PRIVATE_KEY_PATH, 'utf8');
+const PRIVATE_KEY = process.env.PRIVATE_KEY.replace(/\\n/g, '\n');
+
 
 app.get('/', (req, res) => {
   res.send('Hello from Jitsi Token Server!');
